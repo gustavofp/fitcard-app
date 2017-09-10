@@ -1,0 +1,180 @@
+<html ng-app="clientesApp">
+  <head>
+    <title>Cadastro de Clientes</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+     <body ng-controller="clientesController">
+        <div class="container">
+            <div class="row">
+                <form>
+                    <div class="form-group col-md-12">
+                        {{ $scope.errors }}
+                        <div class="col-md-4">
+                            <label class="control-label">CNPJ</label>
+                            <input type="text" class="form-control cnpj" ng-model="formData.cnpj" ng-required/>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Razão Social</label>
+                            <input type="text" class="form-control" ng-model="formData.razao_social" ng-required/>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Nome Fantasia</label>
+                            <input type="text" class="form-control" ng-model="formData.nome_fantasia" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="col-md-4">
+                            <label class="control-label">Email</label>
+                            <input type="email" class="form-control" ng-model="formData.email" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Endereço</label>
+                            <input type="text" class="form-control" ng-model="formData.endereco" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">Cidade</label>
+                            <input type="text" class="form-control" ng-model="formData.cidade" />
+                        </div>
+                        <div class="col-md-1">
+                            <label class="control-label">Estado</label>
+                            <input type="text" class="form-control" ng-model="formData.estado" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="col-md-4">
+                            <label class="control-label">Telefone</label>
+                            <input type="text" class="form-control telefone" ng-model="formData.telefone" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Categoria</label>
+                            <select class="form-control" ng-model="formData.categoria">
+                                <option ng-value="supermercado">Supermercado</option>
+                                <option ng-value="restaurante">Restaurante</option>
+                                <option ng-value="borracharia">Borracharia</option>
+                                <option ng-value="posto">Posto</option>
+                                <option ng-value="oficina">Oficina</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Status</label>
+                            <select class="form-control" ng-model="formData.status">
+                                <option ng-value="true">Ativo</option>
+                                <option ng-value="false">Inativo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <button ng-click="createCliente();" ng-if="!btnEdit" class="btn btn-success pull-right">Salvar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table ng-if="clientes.length > 0" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>CNPJ</th>
+                            <th>Razão Social</th>
+                            <th>Nome Fantasia</th>
+                            <th>Email</th>
+                            <th>Opções</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="cliente in clientes">
+                            <td>{{cliente.cnpj}}</td>
+                            <td>{{cliente.razao_social}}</td>
+                            <td>{{cliente.nome_fantasia}}</td>
+                            <td>{{cliente.email}}</td>
+                            <td>    
+                                <button class="btn btn-warning" ng-click="editCliente(cliente)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button class="btn btn-danger" ng-click="deleteCliente(cliente._id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        $(document).ready(function(){
+            $('.telefone').mask('(00) 0000-0000');
+            $('.cnpj').mask('00.000.000/0000-00');
+        });
+
+        const app = angular.module('clientesApp', []);
+
+        app.controller('clientesController', clientesController);
+
+        clientesController.$inject = ['$scope', '$http'];
+        
+        function clientesController($scope, $http) {
+            $scope.formData = {};
+            $scope.errors = "";
+            $scope.btnEdit = false;
+
+            $http.get('/api/clientes')
+                .success(function(data) {
+                    $scope.clientes = data;
+                    console.log(data);
+                })
+                .error(function(data) {
+                    $scope.errors = `Error:  ${data}`;
+                });
+
+            $scope.createCliente = () => {
+                let id = $scope.formData._id;
+
+                if($scope.formData.categoria == 'supermercado' && !$scope.formData.telefone){
+                    $scope.errors = "O telefone precisa ser preenchido!";
+                }
+
+                if(id){
+                    $http.put('/api/clientes/' + id, $scope.formData)
+                    .success(function(data) {
+                        $scope.clientes = data;
+                        $scope.btnEdit = false;
+                        $scope.formData = {};
+                    })
+                    .error(function(data) {
+                        $scope.errors = `Error:  ${data}`;
+                    });
+                }else{
+                    $http.post('/api/clientes', $scope.formData)
+                    .success(function(data) {
+                        $scope.formData = {};
+                        $scope.clientes = data;
+                        $scope.formData = {};
+                    })
+                    .error(function(data) {
+                        $scope.errors = `Error:  ${data}`;
+                    });
+                }
+            };
+
+            $scope.deleteCliente = id => {
+                $http.delete('/api/clientes/' + id)
+                    .success(function(data) {
+                        $scope.clientes = data;
+                    })
+                    .error(function(data) {
+                        $scope.errors = `Error:  ${data}`;
+                    });
+            };
+
+            $scope.editCliente = cliente => {
+                $scope.btnEdit = true;
+                $scope.formData = angular.copy(cliente);
+            }
+            
+
+        }
+    </script>
+</html>
