@@ -3,6 +3,11 @@ const Cliente = require('../models/cliente')
 
 const createCliente = (req, res) => {
     
+    if(!validarEmail(req.body.cnpj) || !validarCNPJ(req.body.email)){
+        res.send('email/CNPJ inválido')
+    }
+    else{
+    
         Cliente.create({
                 cnpj: req.body.cnpj,
                 razao_social: req.body.razao_social,
@@ -26,6 +31,7 @@ const createCliente = (req, res) => {
                     });
                 }
             });
+    }
 }
 
 const updateCliente = (req, res) => {
