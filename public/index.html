@@ -19,11 +19,11 @@
                     <div class="form-group col-md-12">
                         <div class="col-md-4">
                             <label class="control-label">CNPJ</label>
-                            <input type="text" class="form-control cnpj" ng-model="formData.cnpj" required/>
+                            <input type="text" name="cnpj" class="form-control cnpj" ng-model="formData.cnpj" required/>
                         </div>
                         <div class="col-md-4">
                             <label class="control-label">Razão Social</label>
-                            <input type="text" class="form-control" ng-model="formData.razao_social" required/>
+                            <input type="text" name="razao" class="form-control" ng-model="formData.razao_social" required/>
                         </div>
                         <div class="col-md-4">
                             <label class="control-label">Nome Fantasia</label>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="form-group col-md-12">
-                        <button ng-click="createCliente();" ng-disabled="form.$valid" class="btn btn-success pull-right">Salvar</button>
+                        <button ng-click="createCliente();" ng-disabled="!form.cnpj.$valid || !form.razao.$valid" class="btn btn-success pull-right">Salvar</button>
                     </div>
                 </form>
             </div>
