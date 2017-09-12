@@ -79,7 +79,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table ng-if="clientes.length > 0" class="table table-hover">
+                  <p ng-if="$scope.clientes.length == 0 || !$scope.clientes">Nenhum cliente cadastrado</p>
+                    <table ng-if="$scope.clientes.length > 0" class="table table-hover">
                         <thead>
                         <tr>
                             <th>CNPJ</th>
