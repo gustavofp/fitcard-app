@@ -124,11 +124,11 @@
             $scope.btnEdit = false;
 
             $http.get('/api/clientes')
-                .success(function(data) {
+                .then(function(data) {
                     $scope.clientes = data;
                     console.log(data);
                 })
-                .error(function(data) {
+                .catch(function(data) {
                     $scope.errors = `Error:  ${data}`;
                 });
 
@@ -141,24 +141,24 @@
 
                 if(id){
                     $http.put('/api/clientes/' + id, $scope.formData)
-                    .success(function(data) {
+                    .then(function(data) {
                         $scope.clientes = data;
                         $scope.btnEdit = false;
                         $scope.formData = {};
                       toastr.success('Sucesso!', 'Cliente editado com sucesso');
                     })
-                    .error(function(data) {
+                    .catch(function(data) {
                        toastr.error('Erro!', 'Ocorreu um erro ao editar o cliente');
                     });
                 }else{
                     $http.post('/api/clientes', $scope.formData)
-                    .success(function(data) {
+                    .then(function(data) {
                         $scope.formData = {};
                         $scope.clientes = data;
                         $scope.formData = {};
                       toastr.success('Sucesso!', 'Cliente cadastrado com sucesso');
                     })
-                    .error(function(data) {
+                    .catch(function(data) {
                         toastr.error('Erro!', 'Ocorreu um erro ao cadastrar o cliente');
                     });
                 }
@@ -166,10 +166,10 @@
 
             $scope.deleteCliente = id => {
                 $http.delete('/api/clientes/' + id)
-                    .success(function(data) {
+                    .then(function(data) {
                        toastr.success('Sucesso!', 'Cliente excluído com sucesso');
                     })
-                    .error(function(data) {
+                    .catch(function(data) {
                         toastr.error('Erro!', 'Ocorreu um erro ao excluir o cliente');
                     });
             };
