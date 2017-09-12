@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const urlString = 'mongodb://localhost/Fitcard';
+const urlString = 'mongodb://fitcard:fitcard@ds133104.mlab.com:33104/fitcard';
 
 mongoose.connect(urlString, (err, res) => {
     let str;
