@@ -134,7 +134,7 @@
                 let id = $scope.formData._id;
 
                 if($scope.formData.categoria == 'supermercado' && !$scope.formData.telefone){
-                    $scope.errors = "O telefone precisa ser preenchido!";
+                    toastr.error('Erro!', 'O telefone precisa ser preenchido!');
                 }
 
                 if(id){
@@ -164,8 +164,9 @@
 
             $scope.deleteCliente = id => {
                 $http.delete('/api/clientes/' + id)
-                    .then(function(data) {
+                    .then(function(resp) {
                        toastr.success('Sucesso!', 'Cliente excluído com sucesso');
+                        $scope.clientes = resp.data;
                     })
                     .catch(function(data) {
                         toastr.error('Erro!', 'Ocorreu um erro ao excluir o cliente');
