@@ -112,7 +112,7 @@
             $('.cnpj').mask('00.000.000/0000-00');
         });
 
-        const app = angular.module('clientesApp', []);
+        const app = angular.module('clientesApp', ['ngAnimate', 'toastr']);
 
         app.controller('clientesController', clientesController);
 
@@ -145,9 +145,10 @@
                         $scope.clientes = data;
                         $scope.btnEdit = false;
                         $scope.formData = {};
+                      toastr.success('Sucesso!', 'Cliente editado com sucesso');
                     })
                     .error(function(data) {
-                        $scope.errors = `Error:  ${data}`;
+                       toastr.error('Erro!', 'Ocorreu um erro ao editar o cliente');
                     });
                 }else{
                     $http.post('/api/clientes', $scope.formData)
@@ -155,9 +156,10 @@
                         $scope.formData = {};
                         $scope.clientes = data;
                         $scope.formData = {};
+                      toastr.success('Sucesso!', 'Cliente cadastrado com sucesso');
                     })
                     .error(function(data) {
-                        $scope.errors = `Error:  ${data}`;
+                        toastr.error('Erro!', 'Ocorreu um erro ao cadastrar o cliente');
                     });
                 }
             };
@@ -165,10 +167,10 @@
             $scope.deleteCliente = id => {
                 $http.delete('/api/clientes/' + id)
                     .success(function(data) {
-                        $scope.clientes = data;
+                       toastr.success('Sucesso!', 'Cliente excluído com sucesso');
                     })
                     .error(function(data) {
-                        $scope.errors = `Error:  ${data}`;
+                        toastr.error('Erro!', 'Ocorreu um erro ao excluir o cliente');
                     });
             };
 
