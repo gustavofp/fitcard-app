@@ -116,9 +116,9 @@
 
         app.controller('clientesController', clientesController);
 
-        clientesController.$inject = ['$scope', '$http'];
+        clientesController.$inject = ['$scope', '$http', 'toastr'];
         
-        function clientesController($scope, $http) {
+        function clientesController($scope, $http, toastr) {
             $scope.formData = {};
             $scope.errors = "";
             $scope.btnEdit = false;
