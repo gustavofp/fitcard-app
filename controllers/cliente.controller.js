@@ -3,7 +3,6 @@ const Cliente = require('../models/cliente')
 
 const createCliente = (req, res) => {
     
-    if(validarEmail(req.body.email) && validarCNPJ(req.body.cnpj)){
         Cliente.create({
                 cnpj: req.body.cnpj,
                 razao_social: req.body.razao_social,
@@ -27,14 +26,10 @@ const createCliente = (req, res) => {
                     });
                 }
             });
-    }else{
-        res.send('Erro no formulário, favor preencher o campo CNPJ/email corretamente.')
-    }
 }
 
 const updateCliente = (req, res) => {
     Cliente.findById(req.params.id, (err, cliente) => {
-        if(validarEmail(req.body.email) && validarCNPJ(req.body.cnpj)){
             if (cliente){
                 cliente.cnpj = req.body.cnpj
                 cliente.razao_social = req.body.razao_social
@@ -60,9 +55,6 @@ const updateCliente = (req, res) => {
                     }
                 })
             }
-        }else{
-            res.send('Erro no formulário, favor preencher o campo CNPJ/email corretamente.')
-        }
                 
         });
 }
