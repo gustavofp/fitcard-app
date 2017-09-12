@@ -123,9 +123,8 @@
             $scope.btnEdit = false;
 
             $http.get('/api/clientes')
-                .then(function(data) {
-                    $scope.clientes = data;
-                    console.log(data);
+                .then(function(resp) {
+                    $scope.clientes = resp.data;
                 })
                 .catch(function(data) {
                     $scope.errors = `Error:  ${data}`;
@@ -140,8 +139,8 @@
 
                 if(id){
                     $http.put('/api/clientes/' + id, $scope.formData)
-                    .then(function(data) {
-                        $scope.clientes = data;
+                    .then(function(resp) {
+                        $scope.clientes = resp.data;
                         $scope.btnEdit = false;
                         $scope.formData = {};
                       toastr.success('Sucesso!', 'Cliente editado com sucesso');
@@ -151,9 +150,9 @@
                     });
                 }else{
                     $http.post('/api/clientes', $scope.formData)
-                    .then(function(data) {
+                    .then(function(resp) {
                         $scope.formData = {};
-                        $scope.clientes = data;
+                        $scope.clientes = resp.data;
                         $scope.formData = {};
                       toastr.success('Sucesso!', 'Cliente cadastrado com sucesso');
                     })
