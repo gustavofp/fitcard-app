@@ -8,7 +8,7 @@ const clienteController = require('./controllers/cliente.controller.js');
 
 const port = 8080;           
 
-app.listen(process.env.PORT || port);
+app.listen(port);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
